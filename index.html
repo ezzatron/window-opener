@@ -1,0 +1,75 @@
+<html>
+<head>
+  <title>Window opener vulnerability checker</title>
+
+  <style>
+    .loading .result-loading { display: inherit; }
+    .loading .result-vulnerable { display: none; }
+    .loading .result-safe { display: none; }
+
+    .vulnerable .result-loading { display: none; }
+    .vulnerable .result-vulnerable { display: inherit; }
+    .vulnerable .result-safe { display: none; }
+
+    .safe .result-loading { display: none; }
+    .safe .result-vulnerable { display: none; }
+    .safe .result-safe { display: inherit; }
+
+    body {
+      font-family: sans-serif;
+      font-size: 20px;
+    }
+
+    .result {
+      padding: 1em;
+    }
+    .result p {
+      margin: 0;
+    }
+    * + .result * {
+      margin-top: 1em;
+    }
+    .result-vulnerable,
+    .result-vulnerable a {
+      background-color: crimson;
+      color: white;
+    }
+    .result-safe,
+    .result-safe a {
+      background-color: forestgreen;
+      color: white;
+    }
+  </style>
+</head>
+<body class="loading">
+  <h1>Window opener vulnerability checker</h1>
+
+  <div class="result-loading">
+    <p>I'm still loading, hang on...</p>
+  </div>
+
+  <div class="result result-vulnerable">
+    <p>I <strong>DO</strong> have access to window.opener. Oh no!</p>
+    <button id="prove-it">Prove it!</button>
+  </div>
+
+  <div class="result result-safe">
+    <p>I do not have access to window.opener. Good job!</p>
+  </div>
+
+  <ul>
+    <li><a target="_blank" href="#">Open a window in a vulnerable way</a></li>
+    <li><a target="_blank" href="#" rel="noopener">Open a window in a safe way</a></li>
+  </ul>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.body.setAttribute('class', window.opener ? 'vulnerable' : 'safe')
+
+      document.getElementById('prove-it').addEventListener('click', function (event) {
+        window.opener.location='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+      })
+    })
+  </script>
+</body>
+</html>
